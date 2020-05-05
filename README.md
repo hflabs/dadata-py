@@ -46,7 +46,9 @@ Suggestions and other services:
 ## Development setup
 
 ```sh
-$ pip install black coverage flake8 mypy pylint pytest requests requests-mock tox
+$ python3 -m venv env
+$ . env/bin/activate
+$ make deps
 $ tox
 ```
 

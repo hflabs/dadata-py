@@ -9,6 +9,9 @@ coverage:  ## Run tests with coverage
 	coverage run --include=dadata/* -m pytest
 	coverage report -m
 
+deps:  ## Install dependencies
+	pip install black coverage flake8 mypy pylint pytest requests requests-mock tox
+
 lint:  ## Lint and static-check
 	flake8 dadata
 	pylint dadata
