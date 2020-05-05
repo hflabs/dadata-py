@@ -9,8 +9,6 @@
 
 Thin Python wrapper over Dadata API.
 
-**Only a stub for now**.
-
 ## Installation
 
 ```sh
@@ -19,19 +17,36 @@ pip install dadata
 
 ## Usage
 
+Cleansing:
+
 ```python
 >>> import os
->>> import dadata
+>>> from dadata import Dadata
 >>> token = os.getenv("DADATA_API_KEY")
 >>> secret = os.getenv("DADATA_SECRET_KEY")
 >>> dadata = Dadata(token, secret)
 >>> dadata.clean("address", "мск сухонская 11 89")
+{'source': 'мск сухонская 11 89', 'result': 'г Москва, ул Сухонская, д 11, кв 89', ...}
+```
+
+Suggestions and other services:
+
+```python
+>>> import os
+>>> from dadata import Dadata
+>>> token = os.getenv("DADATA_API_KEY")
+>>> dadata = Dadata(token)
+>>> dadata.geolocate(lat=55.8782557, lon=37.65372)
+>>> dadata.iplocate("212.45.30.108")
+>>> dadata.suggest("party", "моторика")
+>>> dadata.find_by_id("party", "7719402047")
+>>> dadata.find_affiliated("7736207543")
 ```
 
 ## Development setup
 
 ```sh
-$ pip install black coverage flake8 mypy pylint pytest tox
+$ pip install black coverage flake8 mypy pylint pytest requests requests-mock tox
 $ tox
 ```
 
