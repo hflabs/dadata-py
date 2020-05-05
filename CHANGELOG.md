@@ -1,3 +1,9 @@
+# 0.2.1 (2020-05-05)
+
+### Bug Fixes
+
+-   Add requests dependency ([6262c4f](https://github.com/nalgeon/dadata-py/commit/6262c4f28258c124167438d6644fc559c8c102a2))
+
 # 0.2.0 (2020-05-05)
 
 ### Features
