@@ -8,6 +8,7 @@ author = "Anton Zhiyanov"
 author-email = "m@antonz.ru"
 home-page = "https://github.com/nalgeon/dadata-py"
 requires-python = ">=3.6"
+requires = [ "requests" ]
 description-file = "README.md"
 classifiers = [
     "License :: OSI Approved :: MIT License",
