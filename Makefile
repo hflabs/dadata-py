@@ -15,7 +15,7 @@ lint:  ## Lint and static-check
 	mypy dadata
 
 push:  ## Push code with tags
-	git push --follow-tags
+	git push && git push --tags
 
 test:  ## Run tests
 	pytest
