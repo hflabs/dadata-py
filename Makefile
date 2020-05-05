@@ -1,12 +1,12 @@
 .DEFAULT_GOAL := help
-.PHONY: changelog coverage lint pull push schemas test
+.PHONY: changelog coverage deps help lint push test
 
 changelog:  ## Generate changelog
 	conventional-changelog -p angular -i CHANGELOG.md -s
 
 coverage:  ## Run tests with coverage
 	coverage erase
-	coverage run --include=dadata/* -m pytest
+	coverage run --include=dadata/* -m pytest -ra
 	coverage report -m
 
 deps:  ## Install dependencies
@@ -21,7 +21,7 @@ push:  ## Push code with tags
 	git push && git push --tags
 
 test:  ## Run tests
-	pytest
+	pytest -ra
 
 help: ## Show help message
 	@IFS=$$'\n' ; \
