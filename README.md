@@ -20,10 +20,9 @@ pip install dadata
 Cleansing:
 
 ```python
->>> import os
 >>> from dadata import Dadata
->>> token = os.getenv("DADATA_API_KEY")
->>> secret = os.getenv("DADATA_SECRET_KEY")
+>>> token = "Replace with Dadata API key"
+>>> secret = "Replace with Dadata secret key"
 >>> dadata = Dadata(token, secret)
 >>> dadata.clean("address", "мск сухонская 11 89")
 {'source': 'мск сухонская 11 89', 'result': 'г Москва, ул Сухонская, д 11, кв 89', ...}
@@ -32,9 +31,8 @@ Cleansing:
 Suggestions and other services:
 
 ```python
->>> import os
 >>> from dadata import Dadata
->>> token = os.getenv("DADATA_API_KEY")
+>>> token = "Replace with Dadata API key"
 >>> dadata = Dadata(token)
 >>> dadata.geolocate(lat=55.8782557, lon=37.65372)
 >>> dadata.iplocate("212.45.30.108")
