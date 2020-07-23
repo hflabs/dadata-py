@@ -6,7 +6,7 @@ build-backend = "flit_core.buildapi"
 module = "dadata"
 author = "Anton Zhiyanov"
 author-email = "m@antonz.ru"
-home-page = "https://github.com/nalgeon/dadata-py"
+home-page = "https://github.com/hflabs/dadata-py"
 requires-python = ">=3.6"
 requires = [ "requests" ]
 description-file = "README.md"
