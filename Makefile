@@ -10,7 +10,7 @@ coverage:  ## Run tests with coverage
 	coverage report -m
 
 deps:  ## Install dependencies
-	pip install black coverage flake8 httpx mypy pylint pytest pytest-httpx tox
+	pip install black coverage flake8 httpx mypy pylint pytest pytest-asyncio pytest-httpx tox
 
 lint:  ## Lint and static-check
 	flake8 dadata
