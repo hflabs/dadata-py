@@ -60,6 +60,13 @@ class CleanClient(ClientBase):
         response = await self._post(url, data)
         return response[0] if response else None
 
+    async def clean_record(self, structure: List[str], record: List[str]) -> List[Dict]:
+        """Cleanse `record` of specified `structure`."""
+        url = "clean"
+        data = {"structure": structure, "data": [record]}
+        response = await self._post(url, data)
+        return response["data"][0] if response else None
+
 
 class SuggestClient(ClientBase):
     """Dadata Suggestions API client"""
@@ -158,6 +165,10 @@ class DadataClient:
     async def clean(self, name: str, source: str) -> Optional[Dict]:
         """Cleanse `source` as `name` data type."""
         return await self._cleaner.clean(name=name, source=source)
+
+    async def clean_record(self, structure: List[str], record: List[str]) -> List[Dict]:
+        """Cleanse `record` of specified `structure`."""
+        return await self._cleaner.clean_record(structure=structure, record=record)
 
     async def geolocate(
         self, name: str, lat: float, lon: float, radius_meters: int = 100, **kwargs

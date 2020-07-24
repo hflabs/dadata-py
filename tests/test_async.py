@@ -39,6 +39,17 @@ async def test_clean(httpx_mock: HTTPXMock):
 
 
 @pytest.mark.asyncio
+async def test_clean_record(httpx_mock: HTTPXMock):
+    structure = ["AS_IS", "AS_IS", "AS_IS"]
+    record = ["1", "2", "3"]
+    expected = [{"source": "1"}, {"source": "2"}, {"source": "3"}]
+    response = {"structure": structure, "data": [expected]}
+    httpx_mock.add_response(method="POST", url=f"{CleanClient.BASE_URL}clean", json=response)
+    actual = await dadata.clean_record(structure=structure, record=record)
+    assert actual == expected
+
+
+@pytest.mark.asyncio
 async def test_geolocate(httpx_mock: HTTPXMock):
     expected = [
         {"value": "г Москва, ул Сухонская, д 11", "data": {"kladr_id": "7700000000028360004"}}
