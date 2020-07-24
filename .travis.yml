@@ -1,7 +1,7 @@
 language: python
 python:
     - "3.8"
-install: pip install coverage coveralls flake8 httpx mccabe mypy pylint pytest pytest-asyncio pytest-httpx
+install: pip install coverage coveralls flake8 httpx mccabe mypy pylint pytest>=5.4 pytest-asyncio pytest-httpx
 script:
     - flake8 dadata
     - pylint dadata

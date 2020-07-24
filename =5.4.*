@@ -1,0 +1,12 @@
+Collecting pytest
+  Using cached pytest-5.4.3-py3-none-any.whl (248 kB)
+Requirement already satisfied: pluggy<1.0,>=0.12 in ./env/lib/python3.8/site-packages (from pytest) (0.13.1)
+Requirement already satisfied: wcwidth in ./env/lib/python3.8/site-packages (from pytest) (0.2.5)
+Requirement already satisfied: py>=1.5.0 in ./env/lib/python3.8/site-packages (from pytest) (1.9.0)
+Requirement already satisfied: packaging in ./env/lib/python3.8/site-packages (from pytest) (20.4)
+Requirement already satisfied: attrs>=17.4.0 in ./env/lib/python3.8/site-packages (from pytest) (19.3.0)
+Requirement already satisfied: more-itertools>=4.0.0 in ./env/lib/python3.8/site-packages (from pytest) (8.4.0)
+Requirement already satisfied: pyparsing>=2.0.2 in ./env/lib/python3.8/site-packages (from packaging->pytest) (2.4.7)
+Requirement already satisfied: six in ./env/lib/python3.8/site-packages (from packaging->pytest) (1.15.0)
+Installing collected packages: pytest
+Successfully installed pytest-5.4.3
