@@ -1,3 +1,10 @@
+# 20.7.0 (2020-07-24)
+
+### Features
+
+- Async API client (`DadataAsync`)
+- Switched from SemVer to CalVer
+
 # 0.3.0 (2020-07-16)
 
 ### Features
