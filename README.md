@@ -179,7 +179,9 @@ Find by KLADR ID:
 >>> await dadata.find_by_id(name="address", query="77000000000268400")
 ```
 
-### [Suggest postal office](https://dadata.ru/api/suggest/postal_unit/)
+### [Find postal office](https://dadata.ru/api/suggest/postal_unit/)
+
+Suggest postal office by address or code:
 
 ```python
 >>> await dadata.suggest(name="postal_unit", query="дежнева 2а")
@@ -192,7 +194,7 @@ Find by KLADR ID:
 ]
 ```
 
-### [Find postal office by code](https://dadata.ru/api/suggest/postal_unit/)
+Find postal office by code:
 
 ```python
 >>> await dadata.find_by_id(name="postal_unit", query="127642")
@@ -205,7 +207,7 @@ Find by KLADR ID:
 ]
 ```
 
-### [Find nearest postal office](https://dadata.ru/api/suggest/postal_unit/)
+Find nearest postal office:
 
 ```python
 >>> await dadata.geolocate(name="postal_unit", lat=55.878, lon=37.653, radius_meters=1000)
@@ -619,6 +621,46 @@ Constrain by city (Saint Petersburg):
 [
     { 'value': 'Услуги по обрезинованию валенок (рыбацкие калоши)', ... }
 ]
+```
+
+## Profile API
+
+Balance:
+
+```python
+>>> await dadata.get_balance()
+8238.20
+```
+
+Usage stats:
+
+```python
+>>> await dadata.get_daily_stats()
+{
+    'date': '2020-07-27',
+    'services': {
+        'merging': 0,
+        'suggestions': 45521,
+        'clean': 1200
+    }
+}
+```
+
+Dataset versions:
+
+```python
+>>> await dadata.get_versions()
+{
+    'dadata': { 'version': 'stable (9048:bf33b2acc8ba)' },
+    'factor': {
+        'resources': { ... },
+        'version': '20.06 (eb70078e)'
+    },
+    'suggestions': {
+        'resources': { ... },
+        'version': '20.5 (b55eb7c4)'
+    }
+}
 ```
 
 ## Development setup
