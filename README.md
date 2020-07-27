@@ -22,16 +22,31 @@ Requirements:
 
 ## Usage
 
-Create API client instance:
+Import Dadata client and set API keys:
 
 ```python
->>> from dadata import DadataAsync
->>> token = "Replace with Dadata API key"
->>> secret = "Replace with Dadata secret key"
->>> await dadata = Dadata(token, secret)
+from dadata import DadataAsync
+
+token = "Replace with Dadata API key"
+secret = "Replace with Dadata secret key"
 ```
 
-Then call API methods as specified below.
+Use `async with DadataAsync()` if you want a context-managed client:
+
+```python
+async with DadataAsync(token, secret) as dadata:
+    ...
+```
+
+Alternatively, use `await dadata.close()` if you want to close a client explicitly:
+
+```python
+dadata = DadataAsync(token, secret)
+...
+await dadata.close()
+```
+
+Call API methods as specified below.
 
 Examples use async client (`DadataAsync`), but there is also a sync one (`Dadata`) with the same features.
 
