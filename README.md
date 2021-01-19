@@ -17,10 +17,38 @@ pip install dadata
 
 Requirements:
 
-- Python 3.7+
-- [httpx](https://pypi.org/project/httpx/)
+-   Python 3.7+
+-   [httpx](https://pypi.org/project/httpx/)
 
 ## Usage
+
+Import Dadata client and set API keys:
+
+```python
+from dadata import Dadata
+
+token = "Replace with Dadata API key"
+secret = "Replace with Dadata secret key"
+```
+
+Use `with Dadata()` if you want a context-managed client:
+
+```python
+with Dadata(token, secret) as dadata:
+    ...
+```
+
+Alternatively, use `dadata.close()` if you want to close a client explicitly:
+
+```python
+dadata = Dadata(token, secret)
+...
+dadata.close()
+```
+
+Call API methods as specified below.
+
+## Usage (async)
 
 Import Dadata client and set API keys:
 
@@ -46,16 +74,14 @@ dadata = DadataAsync(token, secret)
 await dadata.close()
 ```
 
-Call API methods as specified below.
-
-Examples use async client (`DadataAsync`), but there is also a sync one (`Dadata`) with the same features.
+Call API methods as specified below (add `async` / `await` keywords where applicable).
 
 ## Postal Address
 
 ### [Validate and cleanse address](https://dadata.ru/api/clean/address/)
 
 ```python
->>> await dadata.clean(name="address", source="мск сухонская 11 89")
+>>> dadata.clean(name="address", source="мск сухонская 11 89")
 {
     'source': 'мск сухонская 11 89',
     'result': 'г Москва, ул Сухонская, д 11, кв 89',
@@ -85,7 +111,7 @@ Examples use async client (`DadataAsync`), but there is also a sync one (`Dadata
 Same API method as "validate and cleanse":
 
 ```python
->>> await dadata.clean(name="address", source="москва сухонская 11")
+>>> dadata.clean(name="address", source="москва сухонская 11")
 {
     'source': 'мск сухонская 11 89',
     'result': 'г Москва, ул Сухонская, д 11, кв 89',
@@ -102,7 +128,7 @@ Same API method as "validate and cleanse":
 ### [Reverse geocode address](https://dadata.ru/api/geolocate/)
 
 ```python
->>> await dadata.geolocate(name="address", lat=55.878, lon=37.653)
+>>> dadata.geolocate(name="address", lat=55.878, lon=37.653)
 [
     { 'value': 'г Москва, ул Сухонская, д 11', ... },
     { 'value': 'г Москва, ул Сухонская, д 11А', ... },
@@ -114,7 +140,7 @@ Same API method as "validate and cleanse":
 ### [GeoIP city](https://dadata.ru/api/iplocate/)
 
 ```python
->>> await dadata.iplocate("46.226.227.20")
+>>> dadata.iplocate("46.226.227.20")
 {
     'value': 'г Краснодар',
     'unrestricted_value': '350000, Краснодарский край, г Краснодар',
@@ -125,7 +151,7 @@ Same API method as "validate and cleanse":
 ### [Autocomplete (suggest) address](https://dadata.ru/api/suggest/address/)
 
 ```python
->>> await dadata.suggest(name="address", query="самара метал")
+>>> dadata.suggest(name="address", query="самара метал")
 [
     { 'value': 'г Самара, пр-кт Металлургов', ... },
     { 'value': 'г Самара, ул Металлистов', ... },
@@ -137,7 +163,7 @@ Same API method as "validate and cleanse":
 Show suggestions in English:
 
 ```python
->>> await dadata.suggest(name="address", query="samara metal", language="en")
+>>> dadata.suggest(name="address", query="samara metal", language="en")
 [
     { 'value': 'Russia, gorod Samara, prospekt Metallurgov', ... },
     { 'value': 'Russia, gorod Samara, ulitsa Metallistov', ... },
@@ -150,7 +176,7 @@ Constrain by city (Yuzhno-Sakhalinsk):
 
 ```python
 >>> locations = [{ "kladr_id": "6500000100000" }]
->>> await dadata.suggest(name="address", query="Ватутина", locations=locations)
+>>> dadata.suggest(name="address", query="Ватутина", locations=locations)
 [
     {'value': 'г Южно-Сахалинск, ул Ватутина' ... }
 ]
@@ -160,7 +186,7 @@ Constrain by specific geo point and radius (in Vologda city):
 
 ```python
 >>> geo = [{ "lat": 59.244634,  "lon": 39.913355, "radius_meters": 200 }]
->>> await dadata.suggest(name="address", query="сухонская", locations_geo=geo)
+>>> dadata.suggest(name="address", query="сухонская", locations_geo=geo)
 [
     {'value': 'г Вологда, ул Сухонская' ... }
 ]
@@ -170,7 +196,7 @@ Boost city to top (Toliatti):
 
 ```python
 >>> boost = [{ "kladr_id": "6300000700000" }]
->>> await dadata.suggest(name="address", query="авто", locations_boost=boost)
+>>> dadata.suggest(name="address", query="авто", locations_boost=boost)
 [
     {'value': 'Самарская обл, г Тольятти, Автозаводское шоссе' ... },
     {'value': 'Самарская обл, г Тольятти, ул Автомобилистов' ... },
@@ -182,7 +208,7 @@ Boost city to top (Toliatti):
 ### [Find address by FIAS ID](https://dadata.ru/api/find-address/)
 
 ```python
->>> await dadata.find_by_id(name="address", query="9120b43f-2fae-4838-a144-85e43c2bfb29")
+>>> dadata.find_by_id(name="address", query="9120b43f-2fae-4838-a144-85e43c2bfb29")
 [
     { 'value': 'г Москва, ул Снежная', ... }
 ]
@@ -191,7 +217,7 @@ Boost city to top (Toliatti):
 Find by KLADR ID:
 
 ```python
->>> await dadata.find_by_id(name="address", query="77000000000268400")
+>>> dadata.find_by_id(name="address", query="77000000000268400")
 ```
 
 ### [Find postal office](https://dadata.ru/api/suggest/postal_unit/)
@@ -199,7 +225,7 @@ Find by KLADR ID:
 Suggest postal office by address or code:
 
 ```python
->>> await dadata.suggest(name="postal_unit", query="дежнева 2а")
+>>> dadata.suggest(name="postal_unit", query="дежнева 2а")
 [
     {
         'value': '127642',
@@ -212,7 +238,7 @@ Suggest postal office by address or code:
 Find postal office by code:
 
 ```python
->>> await dadata.find_by_id(name="postal_unit", query="127642")
+>>> dadata.find_by_id(name="postal_unit", query="127642")
 [
     {
         'value': '127642',
@@ -225,7 +251,7 @@ Find postal office by code:
 Find nearest postal office:
 
 ```python
->>> await dadata.geolocate(name="postal_unit", lat=55.878, lon=37.653, radius_meters=1000)
+>>> dadata.geolocate(name="postal_unit", lat=55.878, lon=37.653, radius_meters=1000)
 [
     {
         'value': '127642',
@@ -238,7 +264,7 @@ Find nearest postal office:
 ### [Get City ID for delivery services](https://dadata.ru/api/delivery/)
 
 ```python
->>> await dadata.find_by_id(name="delivery", query="3100400100000")
+>>> dadata.find_by_id(name="delivery", query="3100400100000")
 [
     {
         'value': '3100400100000',
@@ -256,7 +282,7 @@ Find nearest postal office:
 ### [Get address strictly according to FIAS](https://dadata.ru/api/find-fias/)
 
 ```python
->>> await dadata.find_by_id(name="fias", query="9120b43f-2fae-4838-a144-85e43c2bfb29")
+>>> dadata.find_by_id(name="fias", query="9120b43f-2fae-4838-a144-85e43c2bfb29")
 [
     { 'value': 'г Москва, ул Снежная', ... }
 ]
@@ -265,7 +291,7 @@ Find nearest postal office:
 ### [Suggest country](https://dadata.ru/api/suggest/country/)
 
 ```python
->>> await dadata.suggest(name="country", query="та")
+>>> dadata.suggest(name="country", query="та")
 [
     { 'value': 'Таджикистан', ... },
     { 'value': 'Таиланд', ... },
@@ -279,7 +305,7 @@ Find nearest postal office:
 ## [Find company by INN](https://dadata.ru/api/find-party/)
 
 ```python
->>> await dadata.find_by_id(name="party", query="7707083893")
+>>> dadata.find_by_id(name="party", query="7707083893")
 [
     {
         'value': 'ПАО СБЕРБАНК',
@@ -297,7 +323,7 @@ Find nearest postal office:
 Find by INN and KPP:
 
 ```python
->>> await dadata.find_by_id(name="party", query="7707083893", kpp="540602001")
+>>> dadata.find_by_id(name="party", query="7707083893", kpp="540602001")
 [
     {
         'value': 'СИБИРСКИЙ БАНК ПАО СБЕРБАНК',
@@ -314,7 +340,7 @@ Find by INN and KPP:
 ### [Suggest company](https://dadata.ru/api/suggest/party/)
 
 ```python
->>> await dadata.suggest(name="party", query="сбер")
+>>> dadata.suggest(name="party", query="сбер")
 [
     { 'value': 'ПАО СБЕРБАНК', ... },
     { 'value': 'АО "СБЕРБРОКЕР"', ... },
@@ -327,31 +353,31 @@ Constrain by specific regions (Saint Petersburg and Leningradskaya oblast):
 
 ```python
 >>> locations = [{ "kladr_id": "7800000000000" }, { "kladr_id": "4700000000000"}]
->>> await dadata.suggest(name="party", query="сбер", locations=locations)
+>>> dadata.suggest(name="party", query="сбер", locations=locations)
 ```
 
 Constrain by active companies:
 
 ```python
->>> await dadata.suggest(name="party", query="сбер", status=["ACTIVE"])
+>>> dadata.suggest(name="party", query="сбер", status=["ACTIVE"])
 ```
 
 Constrain by individual entrepreneurs:
 
 ```python
->>> await dadata.suggest(name="party", query="сбер", type="INDIVIDUAL")
+>>> dadata.suggest(name="party", query="сбер", type="INDIVIDUAL")
 ```
 
 Constrain by head companies, no branches:
 
 ```python
->>> await dadata.suggest(name="party", query="сбер", branch_type=["MAIN"])
+>>> dadata.suggest(name="party", query="сбер", branch_type=["MAIN"])
 ```
 
 ### [Find affiliated companies](https://dadata.ru/api/find-affiliated/)
 
 ```python
->>> await dadata.find_affiliated("7736207543")
+>>> dadata.find_affiliated("7736207543")
 [
     { 'value': 'ООО "ДЗЕН.ПЛАТФОРМА"', ... },
     { 'value': 'ООО "ЕДАДИЛ"', ... },
@@ -363,7 +389,7 @@ Constrain by head companies, no branches:
 Search only by manager INN:
 
 ```python
->>> await dadata.find_affiliated("773006366201", scope=["MANAGERS"])
+>>> dadata.find_affiliated("773006366201", scope=["MANAGERS"])
 [
     { 'value': 'ООО "ЯНДЕКС"', ... },
     { 'value': 'МФ "ФОИ"', ... },
@@ -376,7 +402,7 @@ Search only by manager INN:
 ### [Find bank by BIC, SWIFT or INN](https://dadata.ru/api/find-bank/)
 
 ```python
->>> await dadata.find_by_id(name="bank", query="044525225")
+>>> dadata.find_by_id(name="bank", query="044525225")
 [
     {
         'value': 'ПАО Сбербанк',
@@ -394,31 +420,31 @@ Search only by manager INN:
 Find by SWIFT code:
 
 ```python
->>> await dadata.find_by_id(name="bank", query="SABRRUMM")
+>>> dadata.find_by_id(name="bank", query="SABRRUMM")
 ```
 
 Find by INN:
 
 ```python
->>> await dadata.find_by_id(name="bank", query="7728168971")
+>>> dadata.find_by_id(name="bank", query="7728168971")
 ```
 
 Find by INN and KPP:
 
 ```python
->>> await dadata.find_by_id(name="bank", query="7728168971", kpp="667102002")
+>>> dadata.find_by_id(name="bank", query="7728168971", kpp="667102002")
 ```
 
 Find by registration number:
 
 ```python
->>> await dadata.find_by_id(name="bank", query="1481")
+>>> dadata.find_by_id(name="bank", query="1481")
 ```
 
 ### [Suggest bank](https://dadata.ru/api/suggest/bank/)
 
 ```python
->>> await dadata.suggest(name="bank", query="ти")
+>>> dadata.suggest(name="bank", query="ти")
 [
     { 'value': 'АО «Тимер Банк»', ... },
     { 'value': 'АО «Тинькофф Банк»', ... },
@@ -432,7 +458,7 @@ Find by registration number:
 ### [Validate and cleanse name](https://dadata.ru/api/clean/name/)
 
 ```python
->>> await dadata.clean(name="name", source="Срегей владимерович иванов")
+>>> dadata.clean(name="name", source="Срегей владимерович иванов")
 {
     'source': 'Срегей владимерович иванов',
     'result': 'Иванов Сергей Владимирович',
@@ -448,7 +474,7 @@ Find by registration number:
 ### [Suggest name](https://dadata.ru/api/suggest/name/)
 
 ```python
->>> await dadata.suggest(name="fio", query="викт")
+>>> dadata.suggest(name="fio", query="викт")
 [
     { 'value': 'Виктор', ... },
     { 'value': 'Виктория', ... },
@@ -460,7 +486,7 @@ Find by registration number:
 Suggest female first name:
 
 ```python
->>> await dadata.suggest(name="fio", query="викт", parts=["NAME"], gender="FEMALE")
+>>> dadata.suggest(name="fio", query="викт", parts=["NAME"], gender="FEMALE")
 [
     { 'value': 'Виктория', ... },
     { 'value': 'Викторина', ... }
@@ -472,7 +498,7 @@ Suggest female first name:
 ### [Validate and cleanse phone](https://dadata.ru/api/clean/phone/)
 
 ```python
->>> await dadata.clean(name="phone", source="9168-233-454")
+>>> dadata.clean(name="phone", source="9168-233-454")
 {
     'source': '9168-233-454',
     'type': 'Мобильный',
@@ -491,7 +517,7 @@ Suggest female first name:
 ### [Validate passport](https://dadata.ru/api/clean/passport/)
 
 ```python
->>> await dadata.clean(name="passport", source="4509 235857")
+>>> dadata.clean(name="passport", source="4509 235857")
 {
     'source': '4509 235857',
     'series': '45 09',
@@ -503,7 +529,7 @@ Suggest female first name:
 ### [Suggest issued by](https://dadata.ru/api/suggest/fms_unit/)
 
 ```python
->>> await dadata.suggest(name="fms_unit", query="772 053")
+>>> dadata.suggest(name="fms_unit", query="772 053")
 [
     { 'value': 'ОВД ЗЮЗИНО Г. МОСКВЫ', ... },
     { 'value': 'ОВД РАЙОНА ЗЮЗИНО УВД ЮГО-ЗАО Г. МОСКВЫ', ... },
@@ -517,7 +543,7 @@ Suggest female first name:
 ### [Validate email](https://dadata.ru/api/clean/email/)
 
 ```python
->>> await dadata.clean(name="email", source="serega@yandex/ru")
+>>> dadata.clean(name="email", source="serega@yandex/ru")
 {
     'source': 'serega@yandex/ru',
     'email': 'serega@yandex.ru',
@@ -531,7 +557,7 @@ Suggest female first name:
 ### [Suggest email](https://dadata.ru/api/suggest/email/)
 
 ```python
->>> await dadata.suggest(name="email", query="maria@")
+>>> dadata.suggest(name="email", query="maria@")
 [
     { 'value': 'maria@mail.ru', ... },
     { 'value': 'maria@gmail.com', ... },
@@ -545,7 +571,7 @@ Suggest female first name:
 ### [Tax office](https://dadata.ru/api/suggest/fns_unit/)
 
 ```python
->>> await dadata.find_by_id(name="fns_unit", query="5257")
+>>> dadata.find_by_id(name="fns_unit", query="5257")
 [
     {
         'value': 'Инспекция ФНС России по Канавинскому району г.Нижнего Новгорода',
@@ -564,7 +590,7 @@ Suggest female first name:
 ### [Regional court](https://dadata.ru/api/suggest/region_court/)
 
 ```python
->>> await dadata.suggest(name="region_court", query="таганско")
+>>> dadata.suggest(name="region_court", query="таганско")
 [
     { 'value': 'Судебный участок № 371 Таганского судебного района г. Москвы', ... },
     { 'value': 'Судебный участок № 372 Таганского судебного района г. Москвы', ... },
@@ -576,7 +602,7 @@ Suggest female first name:
 ### [Metro station](https://dadata.ru/api/suggest/metro/)
 
 ```python
->>> await dadata.suggest(name="metro", query="алек")
+>>> dadata.suggest(name="metro", query="алек")
 [
     { 'value': 'Александровский сад', ... },
     { 'value': 'Алексеевская', ... },
@@ -589,7 +615,7 @@ Constrain by city (Saint Petersburg):
 
 ```python
 >>> filters = [{ "city": "Санкт-Петербург" }]
->>> await dadata.suggest(name="metro", query="алек", filters=filters)
+>>> dadata.suggest(name="metro", query="алек", filters=filters)
 [
     { 'value': 'Площадь Александра Невского 1', ... },
     { 'value': 'Площадь Александра Невского 2', ... }
@@ -599,7 +625,7 @@ Constrain by city (Saint Petersburg):
 ### [Car brand](https://dadata.ru/api/suggest/car_brand/)
 
 ```python
->>> await dadata.suggest(name="car_brand", query="фо")
+>>> dadata.suggest(name="car_brand", query="фо")
 [
     { 'value': 'Volkswagen', ... },
     { 'value': 'Ford', ... },
@@ -610,7 +636,7 @@ Constrain by city (Saint Petersburg):
 ### [Currency](https://dadata.ru/api/suggest/currency/)
 
 ```python
->>> await dadata.suggest(name="currency", query="руб")
+>>> dadata.suggest(name="currency", query="руб")
 [
     { 'value': 'Белорусский рубль', ... },
     { 'value': 'Российский рубль', ... }
@@ -620,7 +646,7 @@ Constrain by city (Saint Petersburg):
 ### [OKVED 2](https://dadata.ru/api/suggest/okved2/)
 
 ```python
->>> await dadata.suggest(name="okved2", query="космических")
+>>> dadata.suggest(name="okved2", query="космических")
 [
     { 'value': 'Производство космических аппаратов (в том числе спутников), ракет-носителей', ... },
     { 'value': 'Производство автоматических космических аппаратов', ... },
@@ -632,7 +658,7 @@ Constrain by city (Saint Petersburg):
 ### [OKPD 2](https://dadata.ru/api/suggest/okpd2/)
 
 ```python
->>> await dadata.suggest(name="okpd2", query="калоши")
+>>> dadata.suggest(name="okpd2", query="калоши")
 [
     { 'value': 'Услуги по обрезинованию валенок (рыбацкие калоши)', ... }
 ]
@@ -643,14 +669,14 @@ Constrain by city (Saint Petersburg):
 Balance:
 
 ```python
->>> await dadata.get_balance()
+>>> dadata.get_balance()
 8238.20
 ```
 
 Usage stats:
 
 ```python
->>> await dadata.get_daily_stats()
+>>> dadata.get_daily_stats()
 {
     'date': '2020-07-27',
     'services': {
@@ -664,7 +690,7 @@ Usage stats:
 Dataset versions:
 
 ```python
->>> await dadata.get_versions()
+>>> dadata.get_versions()
 {
     'dadata': { 'version': 'stable (9048:bf33b2acc8ba)' },
     'factor': {
