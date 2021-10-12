@@ -158,7 +158,7 @@ class DadataClient:
 
     def __init__(self, token: str, secret: str = None):
         self._cleaner = CleanClient(token=token, secret=secret)
-        self._suggestions = SuggestClient(token=token)
+        self._suggestions = SuggestClient(token=token, secret=secret)
         self._profile = ProfileClient(token=token, secret=secret)
 
     def clean(self, name: str, source: str) -> Optional[Dict]:
