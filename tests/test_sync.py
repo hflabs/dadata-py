@@ -22,6 +22,9 @@ def test_init_cleaner():
 def test_init_suggester():
     suggester = SuggestClient(token="token")
     assert suggester._client.headers["Authorization"] == "Token token"
+    suggester = SuggestClient(token="token", secret="secret")
+    assert suggester._client.headers["Authorization"] == "Token token"
+    assert suggester._client.headers["X-Secret"] == "secret"
 
 
 def test_init_profile():
@@ -62,7 +65,9 @@ def test_geolocate(httpx_mock: HTTPXMock):
 
 def test_geolocate_request(httpx_mock: HTTPXMock):
     httpx_mock.add_response(
-        method="POST", url=f"{SuggestClient.BASE_URL}geolocate/address", json={"suggestions": []},
+        method="POST",
+        url=f"{SuggestClient.BASE_URL}geolocate/address",
+        json={"suggestions": []},
     )
     dadata.geolocate(name="address", lat=55.8782557, lon=37.65372, radius_meters=200, count=5)
     body = b'{"lat": 55.8782557, "lon": 37.65372, "radius_meters": 200, "count": 5}'
@@ -118,7 +123,9 @@ def test_suggest(httpx_mock: HTTPXMock):
 
 def test_suggest_request(httpx_mock: HTTPXMock):
     httpx_mock.add_response(
-        method="POST", url=f"{SuggestClient.BASE_URL}suggest/address", json={"suggestions": []},
+        method="POST",
+        url=f"{SuggestClient.BASE_URL}suggest/address",
+        json={"suggestions": []},
     )
     dadata.suggest(name="address", query="samara", to_bound={"value": "city"})
     body = b'{"query": "samara", "count": 10, "to_bound": {"value": "city"}}'
@@ -148,7 +155,9 @@ def test_find_by_id(httpx_mock: HTTPXMock):
 
 def test_find_by_id_request(httpx_mock: HTTPXMock):
     httpx_mock.add_response(
-        method="POST", url=f"{SuggestClient.BASE_URL}findById/party", json={"suggestions": []},
+        method="POST",
+        url=f"{SuggestClient.BASE_URL}findById/party",
+        json={"suggestions": []},
     )
     dadata.find_by_id(name="party", query="7719402047", count=5)
     body = b'{"query": "7719402047", "count": 5}'

@@ -3,7 +3,6 @@ Asynchronous Dadata API client.
 """
 
 import datetime as dt
-import json
 from typing import Dict, List, Optional
 import httpx
 from dadata import settings
@@ -40,7 +39,7 @@ class ClientBase:
 
     async def _post(self, url, data, timeout=settings.TIMEOUT_SEC):
         """POST request to Dadata API"""
-        response = await self._client.post(url, data=json.dumps(data), timeout=timeout)
+        response = await self._client.post(url, json=data, timeout=timeout)
         response.raise_for_status()
         return response.json()
 
@@ -73,8 +72,8 @@ class SuggestClient(ClientBase):
 
     BASE_URL = "https://suggestions.dadata.ru/suggestions/api/4_1/rs/"
 
-    def __init__(self, token: str):
-        super().__init__(base_url=self.BASE_URL, token=token)
+    def __init__(self, token: str, secret: str = None):
+        super().__init__(base_url=self.BASE_URL, token=token, secret=secret)
 
     async def geolocate(
         self, name: str, lat: float, lon: float, radius_meters: int = 100, **kwargs

@@ -1,3 +1,9 @@
+# 21.10.0 (2021-10-12)
+
+### Features
+
+- Optional secret key in `SuggestClient`
+
 # 20.7.0 (2020-07-24)
 
 ### Features
