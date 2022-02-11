@@ -6,4 +6,4 @@ from dadata.sync import DadataClient as Dadata  # noqa
 from dadata.asynchr import DadataClient as DadataAsync  # noqa
 
 __version__ = "21.10.1"
-__all__ = []  # type: ignore
+__all__ = [Dadata, DadataAsync]  # type: ignore
