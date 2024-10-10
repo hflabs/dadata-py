@@ -1,8 +1,5 @@
 .DEFAULT_GOAL := help
-.PHONY: changelog coverage deps help lint push test
-
-changelog:  ## Generate changelog
-	conventional-changelog -p angular -i CHANGELOG.md -s
+.PHONY: coverage deps help lint push test
 
 coverage:  ## Run tests with coverage
 	coverage erase
