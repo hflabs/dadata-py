@@ -141,8 +141,7 @@ class ProfileClient(ClientBase):
     async def get_daily_stats(self, date: Optional[dt.date] = None) -> Dict:
         """Get daily service usage stats."""
         url = "stat/daily"
-        date = date or dt.date.today()
-        data = {"date": date.isoformat()}
+        data = {"date": date.isoformat()} if date else {}
         response = await self._get(url, data)
         return response
 

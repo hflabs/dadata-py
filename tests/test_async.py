@@ -242,11 +242,21 @@ async def test_get_daily_stats(httpx_mock: HTTPXMock):
     today_str = dt.date.today().isoformat()
     response = {"date": today_str, "services": {"merging": 0, "suggestions": 11, "clean": 1004}}
     httpx_mock.add_response(
-        method="GET", url=f"{ProfileClient.BASE_URL}stat/daily?date={today_str}", json=response
+        method="GET", url=f"{ProfileClient.BASE_URL}stat/daily", json=response
     )
     actual = await dadata.get_daily_stats()
     assert actual == response
 
+@pytest.mark.asyncio
+async def test_get_daily_stats_date(httpx_mock: HTTPXMock):
+    date = dt.date(2024, 5, 28)
+    date_str = date.isoformat()
+    response = {"date": date_str, "services": {"merging": 0, "suggestions": 11, "clean": 1004}}
+    httpx_mock.add_response(
+        method="GET", url=f"{ProfileClient.BASE_URL}stat/daily?date={date_str}", json=response
+    )
+    actual = await dadata.get_daily_stats(date=date)
+    assert actual == response
 
 @pytest.mark.asyncio
 async def test_get_versions(httpx_mock: HTTPXMock):

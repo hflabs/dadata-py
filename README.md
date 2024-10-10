@@ -665,7 +665,7 @@ Balance:
 
 ```python
 >>> dadata.get_balance()
-8238.20
+150.00
 ```
 
 Usage stats:
@@ -673,11 +673,20 @@ Usage stats:
 ```python
 >>> dadata.get_daily_stats()
 {
-    'date': '2020-07-27',
+    'date': '2024-10-10',
     'services': {
+        'clean': 200,
+        'company': 0,
+        'company_similar': 0,
         'merging': 0,
-        'suggestions': 45521,
-        'clean': 1200
+        'suggestions': 15000,
+    },
+    'remaining': {
+        'clean': 800,
+        'company': 50,
+        'company_similar': 0,
+        'merging': 15000,
+        'suggestions': 185000
     }
 }
 ```
