@@ -2,11 +2,6 @@
 
 > Data cleansing, enrichment and suggestions via [Dadata API](https://dadata.ru/api)
 
-[![PyPI Version][pypi-image]][pypi-url]
-[![Build Status][build-image]][build-url]
-[![Code Coverage][coverage-image]][coverage-url]
-[![Code Quality][quality-image]][quality-url]
-
 Thin Python wrapper over Dadata API.
 
 ## Installation
@@ -728,14 +723,3 @@ This library uses [CalVer](https://calver.org/) with YY.MM.MICRO schema. See cha
 ## License
 
 [MIT](https://choosealicense.com/licenses/mit/)
-
-<!-- Markdown link & img dfn's -->
-
-[pypi-image]: https://img.shields.io/pypi/v/dadata?style=flat-square
-[pypi-url]: https://pypi.org/project/dadata/
-[build-image]: https://img.shields.io/travis/hflabs/dadata-py?style=flat-square
-[build-url]: https://travis-ci.org/hflabs/dadata-py
-[coverage-image]: https://img.shields.io/coveralls/github/hflabs/dadata-py?style=flat-square
-[coverage-url]: https://coveralls.io/github/hflabs/dadata-py
-[quality-image]: https://img.shields.io/codeclimate/maintainability/hflabs/dadata-py?style=flat-square
-[quality-url]: https://codeclimate.com/github/hflabs/dadata-py
