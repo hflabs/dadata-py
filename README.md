@@ -17,7 +17,7 @@ pip install dadata
 
 Requirements:
 
--   Python 3.7+
+-   Python 3.9+
 -   [httpx](https://pypi.org/project/httpx/)
 
 ## Usage

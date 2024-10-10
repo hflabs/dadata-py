@@ -11,7 +11,7 @@ from dadata import settings
 class ClientBase:
     """Base class for API client"""
 
-    def __init__(self, base_url: str, token: str, secret: str = None):
+    def __init__(self, base_url: str, token: str, secret: Optional[str] = None):
         headers = {
             "Content-type": "application/json",
             "Accept": "application/json",
@@ -49,7 +49,7 @@ class CleanClient(ClientBase):
 
     BASE_URL = "https://cleaner.dadata.ru/api/v1/"
 
-    def __init__(self, token: str, secret: str = None):
+    def __init__(self, token: str, secret: Optional[str] = None):
         super().__init__(base_url=self.BASE_URL, token=token, secret=secret)
 
     def clean(self, name: str, source: str) -> Optional[Dict]:
@@ -72,7 +72,7 @@ class SuggestClient(ClientBase):
 
     BASE_URL = "https://suggestions.dadata.ru/suggestions/api/4_1/rs/"
 
-    def __init__(self, token: str, secret: str = None):
+    def __init__(self, token: str, secret: Optional[str] = None):
         super().__init__(base_url=self.BASE_URL, token=token, secret=secret)
 
     def geolocate(
@@ -129,7 +129,7 @@ class ProfileClient(ClientBase):
 
     BASE_URL = "https://dadata.ru/api/v2/"
 
-    def __init__(self, token: str, secret: str = None):
+    def __init__(self, token: str, secret: Optional[str] = None):
         super().__init__(base_url=self.BASE_URL, token=token, secret=secret)
 
     def get_balance(self) -> float:
@@ -138,7 +138,7 @@ class ProfileClient(ClientBase):
         response = self._get(url, data={})
         return response["balance"]
 
-    def get_daily_stats(self, date: dt.date = None) -> Dict:
+    def get_daily_stats(self, date: Optional[dt.date] = None) -> Dict:
         """Get daily service usage stats."""
         url = "stat/daily"
         date = date or dt.date.today()
@@ -156,7 +156,7 @@ class ProfileClient(ClientBase):
 class DadataClient:
     """Synchronous Dadata API client"""
 
-    def __init__(self, token: str, secret: str = None):
+    def __init__(self, token: str, secret: Optional[str] = None):
         self._cleaner = CleanClient(token=token, secret=secret)
         self._suggestions = SuggestClient(token=token, secret=secret)
         self._profile = ProfileClient(token=token, secret=secret)
@@ -203,7 +203,7 @@ class DadataClient:
         """Get account balance."""
         return self._profile.get_balance()
 
-    def get_daily_stats(self, date: dt.date = None) -> Dict:
+    def get_daily_stats(self, date: Optional[dt.date] = None) -> Dict:
         """Get daily service usage stats."""
         return self._profile.get_daily_stats(date=date)
 
