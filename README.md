@@ -719,11 +719,7 @@ $ tox
 
 ## Contributing
 
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
-
-Make sure to add or update tests as appropriate.
-
-Use [Black](https://black.readthedocs.io/en/stable/) for code formatting and [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0-beta.4/) for commit messages.
+This project only accepts bug fixes.
 
 ## [Changelog](CHANGELOG.md)
 
