@@ -4,8 +4,8 @@ Tests for synchronous Dadata API client.
 
 import datetime as dt
 from unittest import mock
-import pytest
 import httpx
+import pytest
 from pytest_httpx import HTTPXMock
 from dadata.asynchr import DadataClient, CleanClient, ProfileClient, SuggestClient
 
@@ -74,7 +74,7 @@ async def test_geolocate_request(httpx_mock: HTTPXMock):
         json={"suggestions": []},
     )
     await dadata.geolocate(name="address", lat=55.8782557, lon=37.65372, radius_meters=200, count=5)
-    body = b'{"lat": 55.8782557, "lon": 37.65372, "radius_meters": 200, "count": 5}'
+    body = b'{"lat":55.8782557,"lon":37.65372,"radius_meters":200,"count":5}'
     request = httpx_mock.get_request()
     assert request.read() == body
 
@@ -137,7 +137,7 @@ async def test_suggest_request(httpx_mock: HTTPXMock):
         json={"suggestions": []},
     )
     await dadata.suggest(name="address", query="samara", to_bound={"value": "city"})
-    body = b'{"query": "samara", "count": 10, "to_bound": {"value": "city"}}'
+    body = b'{"query":"samara","count":10,"to_bound":{"value":"city"}}'
     request = httpx_mock.get_request()
     assert request.read() == body
 
@@ -172,7 +172,7 @@ async def test_find_by_id_request(httpx_mock: HTTPXMock):
         json={"suggestions": []},
     )
     await dadata.find_by_id(name="party", query="7719402047", count=5)
-    body = b'{"query": "7719402047", "count": 5}'
+    body = b'{"query":"7719402047","count":5}'
     request = httpx_mock.get_request()
     assert request.read() == body
 
@@ -210,7 +210,7 @@ async def test_find_affiliated_request(httpx_mock: HTTPXMock):
         json={"suggestions": []},
     )
     await dadata.find_affiliated("7736207543", count=5)
-    body = b'{"query": "7736207543", "count": 5}'
+    body = b'{"query":"7736207543","count":5}'
     request = httpx_mock.get_request()
     assert request.read() == body
 
@@ -241,11 +241,10 @@ async def test_get_balance(httpx_mock: HTTPXMock):
 async def test_get_daily_stats(httpx_mock: HTTPXMock):
     today_str = dt.date.today().isoformat()
     response = {"date": today_str, "services": {"merging": 0, "suggestions": 11, "clean": 1004}}
-    httpx_mock.add_response(
-        method="GET", url=f"{ProfileClient.BASE_URL}stat/daily", json=response
-    )
+    httpx_mock.add_response(method="GET", url=f"{ProfileClient.BASE_URL}stat/daily", json=response)
     actual = await dadata.get_daily_stats()
     assert actual == response
+
 
 @pytest.mark.asyncio
 async def test_get_daily_stats_date(httpx_mock: HTTPXMock):
@@ -257,6 +256,7 @@ async def test_get_daily_stats_date(httpx_mock: HTTPXMock):
     )
     actual = await dadata.get_daily_stats(date=date)
     assert actual == response
+
 
 @pytest.mark.asyncio
 async def test_get_versions(httpx_mock: HTTPXMock):
