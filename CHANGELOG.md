@@ -1,3 +1,7 @@
+## 25.7.0 (2025-07-30)
+
+-   Custom timeout.
+
 ## 24.10.0 (2024-10-10)
 
 -   Do not pass the date in `get_daily_stats()` by default.

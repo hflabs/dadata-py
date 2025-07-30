@@ -34,6 +34,24 @@ def test_init_profile():
 
 
 @pytest.mark.asyncio
+async def test_timeout(httpx_mock: HTTPXMock):
+    httpx_mock.add_response(
+        method="POST",
+        url=f"{SuggestClient.BASE_URL}suggest/address",
+        json={"suggestions": []},
+    )
+    dadata = DadataClient(token="token", timeout=5)
+    await dadata.suggest(name="address", query="samara")
+    request = httpx_mock.get_request()
+    assert request.extensions["timeout"] == {
+        "connect": 5.0,
+        "pool": 5.0,
+        "read": 5.0,
+        "write": 5.0,
+    }
+
+
+@pytest.mark.asyncio
 async def test_clean(httpx_mock: HTTPXMock):
     expected = {"source": "Сережа", "result": "Сергей", "qc": 1}
     httpx_mock.add_response(method="POST", url=f"{CleanClient.BASE_URL}clean/name", json=[expected])

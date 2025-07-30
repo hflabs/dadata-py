@@ -71,6 +71,15 @@ await dadata.close()
 
 Call API methods as specified below (add `async` / `await` keywords where applicable).
 
+## Options
+
+The default request timeout is 3 seconds. You can change it with the `timeout` parameter:
+
+```python
+with Dadata(token, secret, timeout=1) as dadata:
+    ...
+```
+
 ## Postal Address
 
 ### [Validate and cleanse address](https://dadata.ru/api/clean/address/)

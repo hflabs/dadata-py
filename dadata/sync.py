@@ -11,7 +11,13 @@ from dadata import settings
 class ClientBase:
     """Base class for API client"""
 
-    def __init__(self, base_url: str, token: str, secret: Optional[str] = None):
+    def __init__(
+        self,
+        base_url: str,
+        token: str,
+        secret: Optional[str] = None,
+        timeout: int = settings.TIMEOUT_SEC,
+    ):
         headers = {
             "Content-type": "application/json",
             "Accept": "application/json",
@@ -19,7 +25,7 @@ class ClientBase:
         }
         if secret:
             headers["X-Secret"] = secret
-        self._client = httpx.Client(base_url=base_url, headers=headers)
+        self._client = httpx.Client(base_url=base_url, headers=headers, timeout=timeout)
 
     def __enter__(self) -> "ClientBase":
         return self
@@ -31,15 +37,15 @@ class ClientBase:
         """Close network connections"""
         self._client.close()
 
-    def _get(self, url, data, timeout=settings.TIMEOUT_SEC):
+    def _get(self, url, data):
         """GET request to Dadata API"""
-        response = self._client.get(url, params=data, timeout=timeout)
+        response = self._client.get(url, params=data)
         response.raise_for_status()
         return response.json()
 
-    def _post(self, url, data, timeout=settings.TIMEOUT_SEC):
+    def _post(self, url, data):
         """POST request to Dadata API"""
-        response = self._client.post(url, json=data, timeout=timeout)
+        response = self._client.post(url, json=data)
         response.raise_for_status()
         return response.json()
 
@@ -49,8 +55,13 @@ class CleanClient(ClientBase):
 
     BASE_URL = "https://cleaner.dadata.ru/api/v1/"
 
-    def __init__(self, token: str, secret: Optional[str] = None):
-        super().__init__(base_url=self.BASE_URL, token=token, secret=secret)
+    def __init__(
+        self,
+        token: str,
+        secret: Optional[str] = None,
+        timeout: int = settings.TIMEOUT_SEC,
+    ):
+        super().__init__(base_url=self.BASE_URL, token=token, secret=secret, timeout=timeout)
 
     def clean(self, name: str, source: str) -> Optional[Dict]:
         """Cleanse `source` as `name` data type."""
@@ -72,8 +83,13 @@ class SuggestClient(ClientBase):
 
     BASE_URL = "https://suggestions.dadata.ru/suggestions/api/4_1/rs/"
 
-    def __init__(self, token: str, secret: Optional[str] = None):
-        super().__init__(base_url=self.BASE_URL, token=token, secret=secret)
+    def __init__(
+        self,
+        token: str,
+        secret: Optional[str] = None,
+        timeout: int = settings.TIMEOUT_SEC,
+    ):
+        super().__init__(base_url=self.BASE_URL, token=token, secret=secret, timeout=timeout)
 
     def geolocate(
         self, name: str, lat: float, lon: float, radius_meters: int = 100, **kwargs
@@ -129,8 +145,13 @@ class ProfileClient(ClientBase):
 
     BASE_URL = "https://dadata.ru/api/v2/"
 
-    def __init__(self, token: str, secret: Optional[str] = None):
-        super().__init__(base_url=self.BASE_URL, token=token, secret=secret)
+    def __init__(
+        self,
+        token: str,
+        secret: Optional[str] = None,
+        timeout: int = settings.TIMEOUT_SEC,
+    ):
+        super().__init__(base_url=self.BASE_URL, token=token, secret=secret, timeout=timeout)
 
     def get_balance(self) -> float:
         """Get account balance."""
@@ -155,10 +176,15 @@ class ProfileClient(ClientBase):
 class DadataClient:
     """Synchronous Dadata API client"""
 
-    def __init__(self, token: str, secret: Optional[str] = None):
-        self._cleaner = CleanClient(token=token, secret=secret)
-        self._suggestions = SuggestClient(token=token, secret=secret)
-        self._profile = ProfileClient(token=token, secret=secret)
+    def __init__(
+        self,
+        token: str,
+        secret: Optional[str] = None,
+        timeout: int = settings.TIMEOUT_SEC,
+    ):
+        self._cleaner = CleanClient(token=token, secret=secret, timeout=timeout)
+        self._suggestions = SuggestClient(token=token, secret=secret, timeout=timeout)
+        self._profile = ProfileClient(token=token, secret=secret, timeout=timeout)
 
     def clean(self, name: str, source: str) -> Optional[Dict]:
         """Cleanse `source` as `name` data type."""
