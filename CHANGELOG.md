@@ -1,3 +1,7 @@
+## 25.10.0 (2025-10-07)
+
+-   `find_by_email` method.
+
 ## 25.7.0 (2025-07-30)
 
 -   Custom timeout.

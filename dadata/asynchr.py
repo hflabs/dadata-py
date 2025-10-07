@@ -129,6 +129,16 @@ class SuggestClient(ClientBase):
         response = await self._post(url, data)
         return response["suggestions"]
 
+    async def find_by_email(
+        self, name: str, query: str, count: int = settings.SUGGESTION_COUNT, **kwargs
+    ) -> List[Dict]:
+        """Find record in `name` directory by its email."""
+        url = f"findByEmail/{name}"
+        data = {"query": query, "count": count}
+        data.update(kwargs)
+        response = await self._post(url, data)
+        return response["suggestions"]
+
     async def find_affiliated(
         self, query: str, count: int = settings.SUGGESTION_COUNT, **kwargs
     ) -> List[Dict]:
@@ -217,6 +227,12 @@ class DadataClient:
     ) -> List[Dict]:
         """Find record in `name` directory by its ID."""
         return await self._suggestions.find_by_id(name=name, query=query, count=count, **kwargs)
+
+    async def find_by_email(
+        self, name: str, query: str, count: int = settings.SUGGESTION_COUNT, **kwargs
+    ) -> List[Dict]:
+        """Find record in `name` directory by its email."""
+        return await self._suggestions.find_by_email(name=name, query=query, count=count, **kwargs)
 
     async def find_affiliated(
         self, query: str, count: int = settings.SUGGESTION_COUNT, **kwargs

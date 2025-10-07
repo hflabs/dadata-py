@@ -4,7 +4,7 @@ build-backend = "uv_build"
 
 [project]
 name = "dadata"
-version = "25.7.0"
+version = "25.10.0"
 description = "Data cleansing, enrichment and suggestions via Dadata API"
 keywords = ["dadata", "clean", "suggest", "api"]
 requires-python = ">=3.9"

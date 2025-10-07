@@ -341,6 +341,27 @@ Find by INN and KPP:
 ]
 ```
 
+## [Find company by email](https://dadata.ru/api/find-company/by-email/)
+
+```python
+>>> dadata.find_by_email(name="company", query="info@dadata.ru")
+[
+    {
+        'value': 'info@dadata.ru',
+        'unrestricted_value': 'info@dadata.ru',
+        'data': {
+            'email': {...},
+            'company': {
+                'domain': 'dadata.ru',
+                'name': 'ООО "ДЕЙТА КЬЮ"',
+                'inn': '7721581040',
+                ...
+            }
+        }
+    }
+]
+```
+
 ### [Suggest company](https://dadata.ru/api/suggest/party/)
 
 ```python

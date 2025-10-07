@@ -190,6 +190,40 @@ def test_find_by_id_not_found(httpx_mock: HTTPXMock):
     assert actual == expected
 
 
+def test_find_by_email(httpx_mock: HTTPXMock):
+    expected = [{"value": "info@dadata.ru", "data": {"company": {"inn": "7721581040"}}}]
+    httpx_mock.add_response(
+        method="POST",
+        url=f"{SuggestClient.BASE_URL}findByEmail/company",
+        json={"suggestions": expected},
+    )
+    actual = dadata.find_by_email(name="company", query="info@dadata.ru")
+    assert actual == expected
+
+
+def test_find_by_email_request(httpx_mock: HTTPXMock):
+    httpx_mock.add_response(
+        method="POST",
+        url=f"{SuggestClient.BASE_URL}findByEmail/company",
+        json={"suggestions": []},
+    )
+    dadata.find_by_email(name="company", query="info@dadata.ru", count=5)
+    body = b'{"query":"info@dadata.ru","count":5}'
+    request = httpx_mock.get_request()
+    assert request.read() == body
+
+
+def test_find_by_email_not_found(httpx_mock: HTTPXMock):
+    expected = []
+    httpx_mock.add_response(
+        method="POST",
+        url=f"{SuggestClient.BASE_URL}findByEmail/company",
+        json={"suggestions": expected},
+    )
+    actual = dadata.find_by_email(name="company", query="info@dadata.ru")
+    assert actual == expected
+
+
 def test_find_affiliated(httpx_mock: HTTPXMock):
     expected = [
         {"value": "ООО ДЗЕН.ПЛАТФОРМА", "data": {"inn": "7704431373"}},
